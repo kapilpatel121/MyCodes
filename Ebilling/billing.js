@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const tableBody = document.getElementById('billing_table_body');

@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2>Billing Information</h2>
-        <form action="#" method="post">
+        <form action="#" method="post" id="billing_form">
             <div class="form-group">
                 <div class="input-group">
                     <label for="customer_name">Customer Name:</label>
@@ -40,7 +40,10 @@
                 </div>
                 <div class="input-group">
                     <label for="product_name">Product Name:</label>
-                    <input type="text" id="product_name" name="product_name" required>
+                    <select id="product_name" name="product_name" required>
+                        <option value="">Select a product</option>
+                        <!-- Product options will be dynamically added here -->
+                    </select>
                 </div>
                 <div class="input-group">
                     <label for="quantity">Quantity:</label>
@@ -81,5 +84,43 @@
     <!-- Print Bill Button -->
     <button id="print_bill_button">Print Bill</button>
     <script src="billing.js"></script>
+    <script>
+        document.getElementById('billing_form').addEventListener('submit', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Clear input fields
+            document.getElementById('product_id').value = '';
+            document.getElementById('product_name').selectedIndex = 0;
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+        });
+
+        // Fetch product names from the backend API
+        fetch('http://localhost:8080/api/customers/getProduct')
+            .then(response => response.json())
+            .then(data => {
+                // Get the dropdown element
+                const dropdown = document.getElementById('product_name');
+
+                // Add a placeholder option
+                const placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.textContent = 'Select a product';
+                dropdown.appendChild(placeholderOption);
+
+                // Iterate through the product names and add them to the dropdown
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product;
+                    option.textContent = product;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                // Handle errors if any
+                console.error('Error fetching product names:', error);
+            });
+    </script>
 </body>
 </html>
