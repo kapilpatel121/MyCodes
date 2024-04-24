@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Page</title>
+    <link rel="stylesheet" href="billing.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Billing Information</h2>
+        <form action="#" method="post" id="billing_form">
+            <div class="form-group">
+                <div class="input-group">
+                    <label for="customer_name">Customer Name:</label>
+                    <input type="text" id="customer_name" name="customer_name" required>
+                </div>
+                <div class="input-group">
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="text" id="contact_number" name="contact_number" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="payment_mode">Payment Mode:</label>
+                    <select id="payment_mode" name="payment_mode">
+                        <option value="cash">Cash</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="UPI">PayPal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group product-details">
+                <div class="input-group">
+                    <label for="product_id">Product ID:</label>
+                    <input type="text" id="product_id" name="product_id" required>
+                </div>
+                <div class="input-group">
+                    <label for="product_name">Product Name:</label>
+                    <select id="product_name" name="product_name" required>
+                        <!-- <option value="">Select a product</option> -->
+                        <!-- Product options will be dynamically added here -->
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                </div>
+                <div class="input-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" min="0.01" step="0.01" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Item">
+            </div>
+        </form>
+        
+        <h2>Billing Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="billing_table_body">
+                <!-- Dynamically populated with JavaScript -->
+            </tbody>
+            <tfoot>
+                <tr class="total">
+                    <td colspan="4">Total</td>
+                    <td id="total_amount">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- Print Bill Button -->
+    <button id="print_bill_button">Print Bill</button>
+    <script src="billing.js"></script>
+    <script>
+        document.getElementById('billing_form').addEventListener('submit', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Clear input fields
+            document.getElementById('product_id').value = '';
+            document.getElementById('product_name').selectedIndex = 0;
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+        });
+
+        // Fetch product names from the backend API
+        fetch('http://localhost:4041/api/customers/getProduct')
+            .then(response => response.json())
+            .then(data => {
+                // Get the dropdown element
+                const dropdown = document.getElementById('product_name');
+
+                // Add a placeholder option
+                const placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.textContent = 'Select a product';
+                dropdown.appendChild(placeholderOption);
+
+                // Iterate through the product names and add them to the dropdown
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product;
+                    option.textContent = product;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                // Handle errors if any
+                console.error('Error fetching product names:', error);
+            });
+    </script>
+</body>
+</html>

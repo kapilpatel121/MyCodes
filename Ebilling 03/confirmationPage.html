@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Item</title>
+</head>
+<body>
+    <h1>Submitted Item:</h1>
+    <p id="submittedItem"></p>
+
+    <script>
+        // Retrieve the value of the "dropdown" parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedItem = urlParams.get('dropdown');
+
+        // Display the selected item on the page
+        const submittedItemElement = document.getElementById('submittedItem');
+        submittedItemElement.textContent = selectedItem;
+    </script>
+</body>
+</html>
