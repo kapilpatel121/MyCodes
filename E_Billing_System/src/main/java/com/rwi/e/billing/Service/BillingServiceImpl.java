@@ -1,5 +1,7 @@
 package com.rwi.e.billing.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class BillingServiceImpl implements IBillingService {
 	@Override
 	public void SaveBillInfo(Customer customer) {
 		 Bill_Entity entity=new Bill_Entity();
+		 
 	       entity.setName(customer.getCustomerName());
 	       entity.setContactNo(customer.getContactNumber());
 	       entity.setEmail(customer.getEmail());
@@ -26,6 +29,10 @@ public class BillingServiceImpl implements IBillingService {
 	        billRepo.save(entity);
 		
 	}
+
+
+
+	
 
 
 }
