@@ -17,7 +17,7 @@ public class CustomerManagmentApplication {
   //  @Autowired
 	//private static  ICustomerService     customerService;
 	public static void main(String[] args) throws SQLException {
-		ApplicationContext ctx = SpringApplication.run(CustomerManagmentApplication.class, args);
+		ApplicationContext   ctx = SpringApplication.run(CustomerManagmentApplication.class, args);
 
 		IBillingService billService = ctx.getBean("BillingService", BillingServiceImpl.class);
 		
